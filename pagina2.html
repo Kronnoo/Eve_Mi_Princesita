@@ -2,50 +2,533 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Sorpresa 2 🧸</title>
+  <title>Me enamoré de ti</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+    :root {
+      --rosa: #ff72a1;
+      --azulito: #cce7ff;
+      --sombra: rgba(0,0,0,0.10);
+      --card-width: 350px;
+      --card-height: 360px;
+      --movimiento: 44px;
+    }
     body {
-      background: linear-gradient(135deg, #B2FFD6, #FFF0F5);
-      font-family: 'Mochiy Pop One', cursive;
       min-height: 100vh;
       margin: 0;
+      background: linear-gradient(120deg, #ffe0ec 0%, #cce7ff 100%);
+      font-family: 'Segoe UI', 'Arial', sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      color: #75678A;
-      padding: 20px;
+      justify-content: center;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 35px;
-      border-radius: 25px;
-      border: 2px solid #B2FFD6;
-      max-width: 500px;
+    .center {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .caja {
+      position: relative;
+      width: var(--card-width);
+      height: var(--card-height);
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 5px 26px var(--sombra);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 24px 30px 24px;
+      transition: transform 0.7s cubic-bezier(.16,.84,.44,1.11), box-shadow 0.4s;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .caja.zoomed {
+      transform: scale(1.12) translateY(-30px);
+      box-shadow: 0 12px 44px #e7548093;
+    }
+    .inicio-contenido {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2em;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 3;
+      background: transparent;
+      transition: opacity 0.4s;
+    }
+    .inicio-contenido.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .titulo-inicio {
+      font-size: 1.4em;
+      color: var(--rosa);
+      font-weight: 600;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      letter-spacing: .5px;
     }
-    h1 { color: #8BE3B0; margin-bottom: 15px; }
-    p { line-height: 1.6; font-size: 1.05em; }
-    .back-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #8BE3B0;
+    .hazclick {
+      font-size: 1.15em;
+      color: #e75480;
+      font-weight: 500;
+      letter-spacing: .5px;
+      cursor: pointer;
+      z-index: 2;
+      animation: pulse 1.35s infinite;
+      transition: opacity 0.3s;
+      background: #fff6fa;
+      border-radius: 1em;
+      padding: 0.3em 1.2em;
+      border: 1.5px solid #ffc6dc;
+      box-shadow: 0 1px 8px #e7548018;
+      margin-top: 0.4em;
+      text-shadow: 0 0 0px #e75480;
+      outline: none;
+      user-select: none;
+    }
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 0px #e75480; }
+      50% { text-shadow: 0 0 6px #e754809a; }
+    }
+    .tarjeta {
+      position: absolute;
+      top: 90px;
+      left: 0; right: 0;
+      margin: auto;
+      width: 90%;
+      min-height: 100px;
+      background: #fff6fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #e7548012;
+      color: #505050;
+      font-size: 1.13em;
+      line-height: 1.3em;
+      padding: 1.6em 1.1em;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(var(--movimiento));
+      transition: opacity 0.5s, transform 0.45s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 1;
+      font-weight: 500;
+    }
+    .tarjeta.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+    .tarjeta.saliente-izq {
+      opacity: 0;
+      transform: translateX(-100%);
+      transition: opacity 0.3s, transform 0.35s;
+    }
+    .tarjeta.saliente-der {
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity 0.3s, transform 0.35s;
+    }
+    .controles {
+      position: absolute;
+      bottom: 24px;
+      left: 0; right: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 2.5em;
+      z-index: 10;
+    }
+    .control-btn {
+      background: #ff72a1;
       color: white;
-      text-decoration: none;
-      border-radius: 15px;
-      transition: background 0.2s;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.8em;
+      cursor: pointer;
+      box-shadow: 0 2px 10px #e7548055;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s;
+      user-select: none;
     }
-    .back-btn:hover { background: #FFB6C1; color: white; }
+    .control-btn:disabled {
+      background: #ffd0e0;
+      color: #fff6fa;
+      cursor: default;
+      opacity: 0.6;
+    }
+    .contador {
+      position: absolute;
+      bottom: 9px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.97em;
+      color: #e75480b9;
+      letter-spacing: .5px;
+      font-weight: 500;
+      z-index: 9;
+    }
+    .footer {
+      margin-top: 2em;
+      color: #afafaf;
+      font-size: 0.96em;
+      text-align: center;
+      user-select: none;
+    }
+    @media (max-width: 420px) {
+      :root { --card-width: 98vw; --card-height: 74vh; }
+      .caja { padding: 24px 2vw 18px 2vw; }
+      .tarjeta { font-size: 1em; padding: 1.1em 0.5em;}
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Un Abrazo Gigante 🧸💗</h1>
-    <p>No importa qué tan pesado o complicado sea el día, saber que cuento contigo me da toda la serenidad y fuerza necesaria. Eres mi refugio y mi persona favorita 🐱.</p>
-    <a href="index.html" class="back-btn">⬅ Volver al Menú</a>
+  <div class="center">
+    <div class="caja" id="caja">
+      <div class="inicio-contenido" id="inicioContenido">
+        <div class="titulo-inicio" id="tituloInicio">💌 Para alguien muy especial 💌</div>
+        <div class="hazclick" id="hazclick">Haz click</div>
+      </div>
+      <!-- Tarjetas insertadas por JS -->
+      <div class="controles" id="controles" style="display:none;">
+        <button class="control-btn" id="prevBtn" title="Anterior">&#8592;</button>
+        <button class="control-btn" id="nextBtn" title="Siguiente">&#8594;</button>
+      </div>
+      <div class="contador" id="contador" style="display:none;">1 / 200</div>
+    </div>
   </div>
+  <div class="footer">Hecho con mucho cariño ❤️<br><span style="font-size:0.83em;">Por alguien que piensa en ti 😊</span></div>
+  <script>
+    // Lista de razones únicas (200)
+    const razones = [
+      "Tu sonrisa hace brillar cualquier día 🫂",
+      "Tus abrazos siempre me reconfortan ❤️",
+      "El brillo de tus ojos me llena de paz 😸",
+      "Tu risa es la melodía que más me gusta escuchar 🙀",
+      "Eres la persona más auténtica que conozco 🫂",
+      "Tu bondad no tiene límites ❤️",
+      "Siempre tienes una palabra justa para cada momento 😸",
+      "Tu creatividad me sorprende a diario 🙀",
+      "Me haces sentir escuchado y comprendido 🫂",
+      "Tus locuras dan alegría a mi vida 😸",
+      "Tu ternura es mi refugio favorito ❤️",
+      "Eres mi lugar seguro 🫂",
+      "Tu entusiasmo por la vida es contagioso 😸",
+      "Siempre sabes cómo sacarme una sonrisa 🙀",
+      "Tus detalles marcan la diferencia cada día 🫂",
+      "Eres la inspiración de mis mejores pensamientos ❤️",
+      "Tu paciencia me enseña a ser mejor 😸",
+      "Cada aventura contigo es inolvidable 🙀",
+      "Tu confianza me motiva a crecer 🫂",
+      "La forma en que me miras me derrite el corazón ❤️",
+      "Tus mensajes alegran mis días 😸",
+      "Eres mi compañera perfecta 🙀",
+      "Tu honestidad es admirable 🫂",
+      "Me encanta aprender cosas nuevas a tu lado 😸",
+      "Tus bromas siempre me hacen reír ❤️",
+      "Tienes una energía que ilumina todo a tu alrededor 🫂",
+      "Siempre estás ahí cuando más te necesito 😸",
+      "Eres la chispa de mi rutina 🙀",
+      "Tu apoyo me da fuerzas en los peores días 🫂",
+      "Tus sueños me inspiran a soñar más alto ❤️",
+      "Sabes escuchar como nadie 😸",
+      "Eres mi mejor secreto 🙀",
+      "Tus caricias calman cualquier tormenta 🫂",
+      "Tu voz es mi melodía favorita ❤️",
+      "Me motivas a ser la mejor versión de mí 😸",
+      "El modo en que amas es único 🙀",
+      "Tu generosidad no tiene comparación 🫂",
+      "Eres la razón por la que sonrío sin razón ❤️",
+      "Tus ocurrencias me sacan carcajadas 😸",
+      "Contigo, cualquier plan es perfecto 🙀",
+      "Tu curiosidad es adorable 🫂",
+      "Tus abrazos tienen magia ❤️",
+      "Eres mi confidente más fiel 😸",
+      "La dulzura en tus palabras me enamora 🙀",
+      "Siempre encuentras algo bueno en todo 🫂",
+      "Tu energía positiva me anima cada día ❤️",
+      "Me siento libre cuando estoy contigo 😸",
+      "Tus ojos cuentan historias hermosas 🙀",
+      "Eres la mejor casualidad de mi vida 🫂",
+      "Tu alegría es contagiosa ❤️",
+      "Me siento afortunado de tenerte 😸",
+      "Tus gestos de cariño no pasan desapercibidos 🙀",
+      "Tu inteligencia me fascina 🫂",
+      "Siempre tienes un consejo sabio ❤️",
+      "Tus silencios también me abrazan 😸",
+      "Eres mi razón para creer en los milagros 🙀",
+      "La forma en que confías en mí me inspira 🫂",
+      "Tus besos son mi adicción favorita ❤️",
+      "Eres mi refugio en cualquier tormenta 😸",
+      "Tu espontaneidad me encanta 🙀",
+      "Eres la calma en mi caos 🫂",
+      "Tus ocurrencias nunca dejan de sorprenderme ❤️",
+      "Me haces sentir importante 😸",
+      "Tienes la risa más linda del mundo 🙀",
+      "Tu sinceridad es un tesoro 🫂",
+      "Siempre tienes tiempo para escucharme ❤️",
+      "Tus abrazos me hacen olvidar todo 😸",
+      "Eres mi mejor motivo para soñar 🙀",
+      "Me encanta tu forma de ver la vida 🫂",
+      "Eres la mejor parte de mis días ❤️",
+      "Tus rarezas me enamoran 😸",
+      "Eres mi alegría en días tristes 🙀",
+      "El calor de tu mano es mi hogar 🫂",
+      "Me pierdo en tu mirada ❤️",
+      "Tus sorpresas hacen mágicos los momentos 😸",
+      "Eres el regalo más bonito que me dio la vida 🙀",
+      "Tu risa ilumina cualquier lugar 🫂",
+      "Tus palabras me animan siempre ❤️",
+      "Eres mi mejor historia 😸",
+      "Tu humildad me inspira 🙀",
+      "Tus locuras me hacen sentir vivo 🫂",
+      "Eres mi mejor pensamiento ❤️",
+      "Me haces creer en el amor verdadero 😸",
+      "Tu ternura es mi debilidad 🙀",
+      "Siempre me entiendes sin hablar 🫂",
+      "Tus caricias me devuelven la calma ❤️",
+      "Eres la luz de mi vida 😸",
+      "Tu generosidad me sorprende cada día 🙀",
+      "Me motivas a nunca rendirme 🫂",
+      "Eres mi mayor admiración ❤️",
+      "Tus palabras me acarician el alma 😸",
+      "Eres la persona más valiente que conozco 🙀",
+      "Tu voz me da tranquilidad 🫂",
+      "Tus juegos me divierten como niño ❤️",
+      "Eres la melodía que alegra mis días 😸",
+      "Me encanta tu espontaneidad 🙀",
+      "Tu inteligencia es admirable 🫂",
+      "Eres mi mejor ejemplo ❤️",
+      "Tus ideas siempre me inspiran 😸",
+      "Me haces sentir especial cada día 🙀",
+      "Tus sueños son tan grandes como tu corazón 🫂",
+      "Eres mi primer pensamiento al despertar ❤️",
+      "Tus mensajes alegran mis tardes 😸",
+      "Me siento afortunado por tu amor 🙀",
+      "Tu paciencia es infinita 🫂",
+      "Eres mi mejor amiga ❤️",
+      "Tus abrazos son mi medicina 😸",
+      "Eres la respuesta a mis deseos 🙀",
+      "Me gusta tu manera de pensar 🫂",
+      "Eres la persona con la que quiero todo ❤️",
+      "Tus detalles siempre me sorprenden 😸",
+      "Tu dulzura es incomparable 🙀",
+      "Me motivas a seguir mis sueños 🫂",
+      "Eres única en tu forma de amar ❤️",
+      "Tus locuras alegran mi vida 😸",
+      "Eres mi paz en días de tormenta 🙀",
+      "Me haces sentir invencible a tu lado 🫂",
+      "Eres quien mejor me conoce ❤️",
+      "Tus miradas me enamoran 😸",
+      "Tu apoyo me ha cambiado la vida 🙀",
+      "Eres mi motor para avanzar 🫂",
+      "Tus palabras me dan esperanza ❤️",
+      "Me gusta cómo haces todo divertido 😸",
+      "Eres la chispa de mi alegría 🙀",
+      "Tus besos son mi lugar favorito 🫂",
+      "Eres quien me inspira a diario ❤️",
+      "Tus travesuras me hacen reír 😸",
+      "Eres mi confidente y mi amante 🙀",
+      "Me encanta tu sinceridad 🫂",
+      "Tus abrazos me completan ❤️",
+      "Eres mi risa favorita 😸",
+      "Me haces sentir afortunado cada día 🙀",
+      "Tu optimismo es contagioso 🫂",
+      "Eres la magia de mis días ❤️",
+      "Tus caricias son únicas 😸",
+      "Me pierdo en tus historias 🙀",
+      "Tus ocurrencias me hacen feliz 🫂",
+      "Eres mi mejor recuerdo ❤️",
+      "Tu forma de amar es especial 😸",
+      "Me haces sentir en casa 🙀",
+      "Tus palabras me animan siempre 🫂",
+      "Eres mi fortuna más grande ❤️",
+      "Tu alegría me da vida 😸",
+      "Me inspiras a ser valiente 🙀",
+      "Tus besos me elevan 🫂",
+      "Eres mi mejor casualidad ❤️",
+      "Tus sueños se vuelven míos 😸",
+      "Me encanta compartir contigo 🙀",
+      "Eres la melodía que alegra mi alma 🫂",
+      "Tus consejos me ayudan siempre ❤️",
+      "Tu dulzura me envuelve 😸",
+      "Me gusta tu forma de sorprenderme 🙀",
+      "Tus palabras me llenan de fe 🫂",
+      "Eres mi esperanza ❤️",
+      "Tus abrazos son mi escudo 😸",
+      "Me haces sentir invencible 🙀",
+      "Tus besos me llenan de amor 🫂",
+      "Eres mi mejor compañía ❤️",
+      "Tus locuras son mi diversión 😸",
+      "Me haces sentir único 🙀",
+      "Tus miradas me dan paz 🫂",
+      "Eres la mejor parte de mi día ❤️",
+      "Tu ternura me conquista 😸",
+      "Me motivas a nunca rendirme 🙀",
+      "Eres mi inspiración diaria 🫂",
+      "Tus ocurrencias me sorprenden ❤️",
+      "Me haces sentir valioso 😸",
+      "Tus palabras me llenan de alegría 🙀",
+      "Eres el sueño que no sabía que tenía 🫂",
+      "Tu voz es mi refugio ❤️",
+      "Tus abrazos me llenan de energía 😸",
+      "Me haces sentir amado 🙀",
+      "Eres la razón de mis mejores recuerdos 🫂",
+      "Tus ideas me fascinan ❤️",
+      "Me gusta tu forma de ver lo bueno 😸",
+      "Tus besos son mi refugio 🙀",
+      "Eres mi mejor destino 🫂",
+      "Tus risas me dan vida ❤️",
+      "Me haces sentir que todo es posible 😸",
+      "Eres el milagro de mi vida 🙀",
+      "Tu dulzura es adictiva 🫂",
+      "Tus palabras siempre me consuelan ❤️",
+      "Me inspiras a ser mejor persona 😸",
+      "Tu risa me da felicidad 🙀",
+      "Tus abrazos son mi hogar 🫂",
+      "Eres la mejor coincidencia ❤️",
+      "Tus mensajes me alegran el día 😸",
+      "Me enamora tu originalidad 🙀",
+      "Tus gestos me hacen feliz 🫂",
+      "Eres mi compañera de aventuras ❤️",
+      "Tus consejos siempre me ayudan 😸",
+      "Me gusta tu forma de amar 🙀",
+      "Tus abrazos me dan fuerza 🫂",
+      "Eres quien me anima a seguir ❤️",
+      "Tus besos me hacen volar 😸",
+      "Me encanta tu autenticidad 🙀",
+      "Tus palabras me hacen soñar 🫂",
+      "Eres mi mayor alegría ❤️",
+      "Tus ocurrencias me divierten 😸",
+      "Me gusta cómo me miras 🙀",
+      "Tus caricias son mi debilidad 🫂",
+      "Eres la razón de mi felicidad ❤️",
+      "Tus sueños también son los míos 😸",
+      "Me completas como nadie 🙀",
+      "Tus abrazos me devuelven la vida 🫂",
+      "Eres mi mejor elección ❤️",
+      "Tus besos son mi paz 😸",
+      "Me haces sentir afortunado de existir 🙀",
+      "Tus palabras me abren el corazón 🫂",
+      "Eres mi todo ❤️",
+      "Porque eres tú, por eso te amo💗 🫂"
+    ];
+
+    // Estados
+    let actual = -1;
+    let tarjetas = [];
+    let animando = false;
+
+    // Elementos
+    const caja = document.getElementById('caja');
+    const inicioContenido = document.getElementById('inicioContenido');
+    const hazclick = document.getElementById('hazclick');
+    const controles = document.getElementById('controles');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const contador = document.getElementById('contador');
+
+    // Crea tarjetas
+    function crearTarjetas() {
+      // Primera tarjeta: intro
+      let intro = document.createElement('div');
+      intro.className = 'tarjeta';
+      intro.innerHTML = `<span style="color:#e75480;font-size:1.18em;">Me enamoré de ti por:</span>`;
+      caja.appendChild(intro);
+      tarjetas.push(intro);
+
+      // Las demás tarjetas
+      razones.forEach((razon, i) => {
+        let div = document.createElement('div');
+        div.className = 'tarjeta';
+        div.innerHTML = `<span>${i+1}. ${razon}</span>`;
+        caja.appendChild(div);
+        tarjetas.push(div);
+      });
+    }
+
+    // Muestra tarjeta en índice "i" con animación
+    function mostrarTarjeta(i, dir = 0) {
+      if (animando) return;
+      animando = true;
+      tarjetas.forEach((t, idx) => {
+        t.classList.remove('visible','saliente-izq','saliente-der');
+        if(idx === i) {
+          setTimeout(() => t.classList.add('visible'), 18);
+        } else if(idx === actual && idx !== i) {
+          // Animación de salida
+          t.classList.add(dir === 1 ? 'saliente-izq' : 'saliente-der');
+        }
+      });
+      setTimeout(() => {
+        animando = false;
+      }, 390);
+      // Flechas y contador
+      prevBtn.disabled = i <= 0;
+      nextBtn.disabled = i >= tarjetas.length-1;
+      contador.textContent = (i === 0) 
+        ? `¡Comencemos! (${razones.length} razones 💖)` 
+        : `${i} / ${razones.length}`;
+      contador.style.display = 'block';
+      controles.style.display = 'flex';
+    }
+
+    // Primer click: zoom y mostrar la intro
+    hazclick.onclick = () => {
+      caja.classList.add('zoomed');
+      inicioContenido.classList.add('oculto');
+      setTimeout(() => {
+        inicioContenido.style.display = 'none';
+        crearTarjetas();
+        actual = 0;
+        mostrarTarjeta(0, 1);
+      }, 550);
+    };
+
+    // Navegación
+    prevBtn.onclick = () => {
+      if(actual > 0) {
+        mostrarTarjeta(--actual, 1);
+      }
+    };
+    nextBtn.onclick = () => {
+      if(actual < tarjetas.length-1) {
+        mostrarTarjeta(++actual, 0);
+      }
+    };
+
+    // Swipe móvil
+    let startX = 0;
+    caja.addEventListener('touchstart', e => {
+      if(e.touches.length === 1) startX = e.touches[0].clientX;
+    });
+    caja.addEventListener('touchend', e => {
+      if(e.changedTouches.length === 1 && actual >= 0) {
+        let endX = e.changedTouches[0].clientX;
+        let dx = endX - startX;
+        if(dx > 55 && actual > 0) prevBtn.click();
+        if(dx < -55 && actual < tarjetas.length-1) nextBtn.click();
+      }
+    });
+
+    // Atajo con teclado
+    document.addEventListener('keydown', e => {
+      if(actual > 0 && (e.key === "ArrowLeft" || e.key === "a")) prevBtn.click();
+      if(actual < tarjetas.length-1 && (e.key === "ArrowRight" || e.key === "d")) nextBtn.click();
+    });
+  </script>
 </body>
 </html>
