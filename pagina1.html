@@ -1,51 +1,502 @@
-<!DOCTYPE html>
+Que este sea el 1: <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Sorpresa 1 🌸</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
-    body {
-      background: linear-gradient(135deg, #FFE4E1, #F7D9FF);
-      font-family: 'Mochiy Pop One', cursive;
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #75678A;
-      padding: 20px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 35px;
-      border-radius: 25px;
-      border: 2px solid #FFB6C1;
-      max-width: 500px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-    h1 { color: #FFB6C1; margin-bottom: 15px; }
-    p { line-height: 1.6; font-size: 1.05em; }
-    .back-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #FFB6C1;
-      color: white;
-      text-decoration: none;
-      border-radius: 15px;
-      transition: background 0.2s;
-    }
-    .back-btn:hover { background: #B2FFD6; color: #75678A; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti, Mi Amor</title>
+    <!-- Tailwind CSS CDN for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a modern and clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base styles for the body, ensuring full-page coverage and centering */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #e1bee7 100%); /* Soft, romantic gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevents scrollbars from appearing */
+        }
+        /* Styles for the main container, including responsiveness and animations */
+        .container {
+            background-color: #ffffff;
+            border-radius: 2rem; /* Highly rounded corners for a soft look */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Prominent shadow for depth */
+            padding: 2.5rem;
+            max-width: 90%;
+            width: 800px; /* Fixed width for desktop, scales down on mobile */
+            text-align: center;
+            transition: all 0.5s ease-in-out; /* Smooth transitions for dynamic changes */
+            transform-origin: center;
+            position: relative;
+            z-index: 10;
+            opacity: 0; /* Hidden initially for fade-in animation */
+            transform: scale(0.9); /* Slightly scaled down for initial animation */
+            animation: fadeInScale 1s forwards; /* CSS animation for a gentle fade-in and scale */
+        }
+
+        /* Keyframes for the initial fade-in and scale animation */
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Styles for the interactive gift box */
+        .gift-box {
+            background: linear-gradient(145deg, #ff8a80 0%, #ff5252 100%); /* Vibrant reddish gradient */
+            border-radius: 50%; /* Makes the element perfectly circular */
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 2rem; /* Centers the box horizontally */
+            cursor: pointer; /* Indicates interactivity */
+            box-shadow: 0 15px 30px rgba(255, 82, 82, 0.4); /* Shadow for depth */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+            position: relative;
+            overflow: hidden; /* Ensures inner elements don't spill out */
+        }
+        /* Hover effects for the gift box */
+        .gift-box:hover {
+            transform: translateY(-8px) scale(1.05); /* Lifts and slightly enlarges on hover */
+            box-shadow: 0 25px 45px rgba(255, 82, 82, 0.6); /* Enhanced shadow on hover */
+        }
+        /* Pseudo-element for a subtle highlight/shine effect on the gift box */
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white */
+            border-radius: 50%;
+            top: 15px;
+            filter: blur(10px); /* Blurs the highlight for a soft glow */
+        }
+        /* Icon styling within the gift box */
+        .gift-box i {
+            color: #fff; /* White icon color */
+            font-size: 4rem; /* Large icon size */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for the icon */
+        }
+        /* Heading styling within the gift box */
+        .gift-box h2 {
+            color: #fff; /* White text color */
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Styles for the grid of options that appear after opening the gift */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid layout */
+            gap: 1.5rem; /* Spacing between grid items */
+            margin-top: 2rem;
+            opacity: 0; /* Hidden initially */
+            max-height: 0; /* Collapsed initially */
+            overflow: hidden; /* Hides content when collapsed */
+            transition: opacity 0.5s ease, max-height 0.7s ease-out; /* Smooth transition for appearance */
+        }
+        /* Active state for the options grid, making it visible */
+        .options-grid.active {
+            opacity: 1;
+            max-height: 800px; /* Expands to show all options */
+        }
+
+        /* Styles for individual option cards within the grid */
+        .option-card {
+            background-color: #f0f4f8; /* Light background for cards */
+            border-radius: 1.5rem; /* Rounded corners for cards */
+            padding: 1.5rem;
+            cursor: pointer; /* Indicates interactivity */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Soft shadow for cards */
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; /* Smooth hover effects */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px; /* Ensures consistent card height */
+        }
+        /* Hover effects for option cards */
+        .option-card:hover {
+            transform: translateY(-5px); /* Lifts slightly on hover */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+            background-color: #e0f2f7; /* Slightly darker background on hover */
+        }
+        /* Icon styling within option cards */
+        .option-card i {
+            font-size: 3rem;
+            color: #673ab7; /* Purple icon color */
+            margin-bottom: 0.75rem;
+        }
+        /* Heading styling within option cards */
+        .option-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Styles for the special "agradecimiento" card when locked */
+        .option-card.locked {
+            background-color: #cccccc; /* Greyed out */
+            cursor: not-allowed; /* Indicates it's not clickable */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            opacity: 0.7;
+        }
+        .option-card.locked:hover {
+            transform: none; /* No lift on hover when locked */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* No enhanced shadow */
+            background-color: #cccccc; /* Stays grey */
+        }
+        .option-card.locked i, .option-card.locked h3 {
+            color: #666666; /* Grey text and icon */
+        }
+
+        /* Styles for the content display area */
+        .content-display {
+            background-color: #f9f9f9;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05); /* Inner shadow for a subtle effect */
+            text-align: left;
+            opacity: 0; /* Hidden initially */
+            max-height: 0; /* Collapsed initially */
+            overflow: hidden; /* Hides content when collapsed */
+            transition: opacity 0.5s ease, max-height 0.7s ease-out; /* Smooth transition for appearance */
+            position: relative;
+        }
+        /* Active state for the content display, making it visible */
+        .content-display.active {
+            opacity: 1;
+            max-height: 800px; /* Expands to show content */
+        }
+        /* Title styling within the content display */
+        .content-display h2 {
+            font-size: 1.8rem;
+            color: #4a148c; /* Darker purple for title */
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        /* Paragraph styling within the content display */
+        .content-display p {
+            font-size: 1.1rem;
+            line-height: 1.7; /* Increased line height for readability */
+            color: #555;
+            white-space: pre-wrap; /* Preserves line breaks and spaces from the source text */
+        }
+        /* Styles for the close button */
+        .close-button {
+            background-color: #ef5350; /* Red close button */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Circular button */
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for the button */
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Smooth hover effects */
+        }
+        /* Hover effects for the close button */
+        .close-button:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+            transform: scale(1.05); /* Slightly enlarges on hover */
+        }
+
+        /* Custom Alert Modal Styles */
+        #custom-alert-modal {
+            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for modal */
+            transition: opacity 0.3s ease;
+        }
+        #custom-alert-modal > div {
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #custom-alert-modal.active > div {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        #custom-alert-modal.active {
+            display: flex; /* Show the modal when active */
+        }
+
+        /* Responsive adjustments for smaller screens (tablets) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .gift-box {
+                width: 150px;
+                height: 150px;
+            }
+            .gift-box i {
+                font-size: 3.5rem;
+            }
+            .gift-box h2 {
+                font-size: 1.2rem;
+            }
+            .option-card {
+                padding: 1rem;
+                min-height: 120px;
+            }
+            .option-card i {
+                font-size: 2.5rem;
+            }
+            .option-card h3 {
+                font-size: 1rem;
+            }
+            .content-display {
+                padding: 1.5rem;
+            }
+            .content-display h2 {
+                font-size: 1.5rem;
+            }
+            .content-display p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Responsive adjustments for very small screens (mobile phones) */
+        @media (max-width: 480px) {
+            .options-grid {
+                grid-template-columns: 1fr; /* Stacks options vertically on very small screens */
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Para mi Princesita 💗✨</h1>
-    <p>Cada instante a tu lado es un recordatorio de lo afortunado que soy. Gracias por tu paciencia, tu apoyo incondicional y por llenar cada día de luz y alegría 😽. ¡Sigamos construyendo momentos hermosos juntos!</p>
-    <a href="index.html" class="back-btn">⬅ Volver al Menú</a>
-  </div>
+    <div class="container">
+        <!-- Initial view with the gift box -->
+        <div id="initial-view">
+            <div class="gift-box" id="open-gift">
+                <i class="fas fa-gift"></i>
+                <h2>Ábreme</h2>
+            </div>
+            <p class="text-gray-700 text-lg mt-4">Haz clic en el regalo para descubrir algo especial.</p>
+        </div>
+
+        <!-- Options grid, initially hidden -->
+        <div id="options-view" class="options-grid">
+            <div class="option-card" data-content-id="origen">
+                <i class="fas fa-heart"></i>
+                <h3>Origen</h3>
+            </div>
+            <div class="option-card" data-content-id="momentos-marcados">
+                <i class="fas fa-star"></i>
+                <h3>Momentos Marcados</h3>
+            </div>
+            <div class="option-card" data-content-id="lo-que-no-se-dice">
+                <i class="fas fa-feather-alt"></i>
+                <h3>Lo que No Se Dice</h3>
+            </div>
+            <div class="option-card" data-content-id="temores-despedidas">
+                <i class="fas fa-cloud-sun-rain"></i>
+                <h3>Temores y Despedidas</h3>
+            </div>
+            <div class="option-card" data-content-id="deseos-sinceros">
+                <i class="fas fa-gift"></i>
+                <h3>Deseos Sinceros</h3>
+            </div>
+            <div class="option-card" data-content-id="verdades-profundas">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Verdades Profundas</h3>
+            </div>
+            <!-- New button for special thanks, with a lock indicator and special styling -->
+            <div class="option-card locked" data-content-id="agradecimiento" data-requires-viewed-all="true" id="agradecimiento-card">
+                <i class="fas fa-lock" style="color: white;"></i> <!-- Lock icon -->
+                <h3 style="color: white;">Un Mensaje Especial para Eve</h3>
+            </div>
+        </div>
+
+        <!-- Content display area, initially hidden -->
+        <div id="content-view" class="content-display">
+            <button class="close-button" id="close-content"><i class="fas fa-times"></i></button>
+            <h2 id="content-title"></h2>
+            <p id="content-text"></p>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <h3 class="text-xl font-bold text-red-600 mb-4">¡Atención! 🚨</h3>
+            <p class="text-gray-700 mb-6">Para ver este mensaje especial, por favor, explora primero todas las otras secciones. ¡Hay mucho que quiero compartir contigo! 💖</p>
+            <button id="close-alert-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full transition duration-300">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        // Ensures the DOM is fully loaded before executing JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get references to key DOM elements
+            const openGiftButton = document.getElementById('open-gift');
+            const initialView = document.getElementById('initial-view');
+            const optionsView = document.getElementById('options-view');
+            const contentView = document.getElementById('content-view');
+            const optionCards = document.querySelectorAll('.option-card');
+            const contentTitle = document.getElementById('content-title');
+            const contentText = document.getElementById('content-text');
+            const closeContentButton = document.getElementById('close-content');
+            const customAlertModal = document.getElementById('custom-alert-modal');
+            const closeAlertButton = document.getElementById('close-alert-button');
+            const agradecimientoCard = document.getElementById('agradecimiento-card'); // Reference to the special card
+
+            // Set to keep track of viewed message categories
+            const viewedCategories = new Set();
+            // List of all regular content categories (excluding the special 'agradecimiento' one)
+            const allRegularCategories = ['origen', 'momentos_marcados', 'lo_que_no_se_dice', 'temores_despedidas', 'deseos_sinceros', 'verdades_profundas'];
+
+            // Define the content for each section, including titles and texts with emojis
+            const contents = {
+                origen: {
+                    title: "El Origen de Todo �",
+                    text: `**El día que todo cambió**
+No fue un beso, ni una palabra exacta. Fue esa manera tuya de estar ahí cuando nadie más lo hacía. Fue cuando vi que tú eras el único refugio que me quedaba. Desde entonces, supe que ya no eras solo alguien más. Eras mi hogar, el ancla que me sostiene en cualquier tormenta. Cada risa, cada mirada, cada silencio compartido, construyó este santuario de amor que hoy llamamos nuestro. 🏠💗
+
+---
+
+**Lo que me salvaste sin darte cuenta**
+Cuando todo en mi mundo parecía fracturarse —mi casa, mi familia, mis ganas de seguir— tú apareciste como un faro en la oscuridad. No con respuestas grandiosas, sino con la simple y poderosa presencia. Me salvaste con tu manera de preguntar si estaba bien, con ese gesto genuino que me hizo sentir visto/a y valorado/a. Y no lo sabías, mi amor… pero ese pequeño acto de bondad me sostuvo, me dio el aire que necesitaba para respirar y la esperanza para reconstruirme. Eres mi salvavidas silencioso. 🫂💗
+
+---
+
+**Por qué te escribo**
+Porque a veces, mi voz tiembla y mis palabras se enredan cuando intento expresar la inmensidad de lo que siento por ti. Porque sé que en el papel, en la quietud de estas letras, puedo mostrarte la profundidad de mi corazón, lo que mi alma nunca supo traducir con la misma claridad. Porque tú, más que nadie, valoras lo que escribo, lo que emana de mi ser más íntimo. Porque esta es mi forma más pura y sincera de decirte: estás intrínsecamente en mí, en cada pensamiento, en cada latido. ✍️💗`
+                },
+                momentos_marcados: {
+                    title: "Momentos que Marcaron ✨",
+                    text: `**Ese beso inesperado**
+No fue perfecto, no fue planeado, ni siquiera lo esperábamos. Pero fue real, tan real que aún lo siento en mi piel. Y aunque al principio sentí que cruzaba una línea invisible, un límite que quizás no debíamos tocar, el silencio que vino después, ese silencio cargado de significado, y lo que vino después del silencio, me hizo entender algo mucho más profundo: que había un lazo invisible entre nosotros, un hilo dorado que nos unía… más fuerte, más inquebrantable de lo que jamás pude haber imaginado. Fue el inicio de una nueva melodía en nuestras vidas. 💋💗
+
+---
+
+**Cuando me nombras sin decir mi nombre**
+Hay momentos, mi amor, en que ni siquiera necesitas pronunciar mi nombre. Pero sé, con una certeza que me estremece, que me piensas. Lo leo en tu gesto más sutil, en cómo evitas o buscas mi mirada con esa intensidad que solo tú tienes. Me haces existir de una manera que nadie más logra, incluso en tu silencio más profundo. Y eso, para alguien que a veces siente que es invisible para el mundo, lo es todo. Me haces sentir real, importante, y profundamente amado/a. 👀💗`
+                },
+                lo_que_no_se_dice: {
+                    title: "Entre Líneas y Silencios 🤫",
+                    text: `**La contradicción más bonita**
+A veces, mi Eve, hablas como si no me quisieras cerca, como si la cercanía te asustara. Y otras, te acercas con una dulzura y una necesidad que me hacen sentir que temes perderme más que a nada. A veces pareces negarme con tus palabras… y luego me miras con esos ojos que guardan algo tan profundo, algo que aún no puedes o no quieres decir. Y sí, eso duele a ratos, esa dualidad me confunde. Pero también me hace quedarme, me aferra a ti. Porque creo en ti, en la verdad que reside en lo que no dices también, en la autenticidad de tus silencios. 💔💗
+
+---
+
+**Lo que sé y nunca diré**
+Sé, mi amor, que a veces hablas diferente cuando no estoy. Sé que algunas personas, quizás por miedo o por envidia, no quieren que me acerque a ti. Lo he escuchado, lo he sentido en el aire. Pero quiero que sepas que no voy a juzgarte por eso, ni por las presiones externas. Porque yo también, en algún momento, he tenido miedo de mostrar la vulnerabilidad de lo que siento, de lo que realmente soy. Y aún así, a pesar de todo, aquí estoy. Contigo. Mi compromiso y mi amor son más fuertes que cualquier rumor o temor. 🤐💗`
+                },
+                temores_despedidas: {
+                    title: "Mis Temores y Despedidas 🌧️",
+                    text: `**Si algún día decides alejarte…**
+Me va a doler, Eve. Lo sé con una certeza que me oprime el pecho. Será un dolor profundo, un vacío que tardará en sanar. Pero quiero que sepas que, si ese día llega, no te detendré. Porque si tú eres feliz, si tu camino te lleva a otro lugar donde encuentres tu plenitud, aunque no sea conmigo, entonces cada momento que compartimos, cada risa, cada lágrima, valió la pena. Solo prométeme, mi amor, que, aunque sea por un instante fugaz, recordarás que fuiste mi fuerza, mi pilar, mi refugio cuando todo a mi alrededor se venía abajo. Tu impacto en mi vida es imborrable. 😔💗`
+                },
+                deseos_sinceros: {
+                    title: "Mis Deseos Más Sinceros 🎁",
+                    text: `**Lo que quiero regalarte**
+No quiero regalarte flores que se marchitan, ni cartas que el tiempo puede borrar, ni canciones que se desvanecen en el aire. Quiero regalarte algo que nadie más te ha dado, algo que perdure en lo más profundo de tu ser: la certeza inquebrantable de que, incluso con tus errores, con tus enojos, con tus contradicciones más humanas… mereces ser amada incondicionalmente. Y yo, mi dulce Eve, quiero ser quien te lo recuerde cada día, con cada gesto, con cada palabra, con cada latido de mi corazón. Quiero ser tu espejo, que te muestre la belleza y el valor que a veces no ves en ti misma. ❤️‍🩹💗`
+                },
+                verdades_profundas: {
+                    title: "La Pura Verdad 🔒",
+                    text: `**Esto no es juego. Esto es real.**
+Puede que aún no seamos nada que otros puedan definir, que no llevemos etiquetas que el mundo pueda entender. Pero lo que siento por ti, Eve, no es un juego efímero, ni una ilusión pasajera. Es algo que nació en el momento más inesperado, cuando más lo necesitaba, y creció en mi interior sin pedir permiso, arraigándose profundamente. Esto es real, tan tangible como el aire que respiro. Tú eres real, con todas tus complejidades y maravillas. Y yo... también lo soy, en mi versión más auténtica y vulnerable, cuando estoy contigo. Esta conexión es mi verdad más preciada. ✨💗`
+                },
+                agradecimiento: {
+                    title: "Un Agradecimiento Especial para Ti, Eve 💗",
+                    text: `Mi queridísima Eve, mi luz, mi inspiración,
+
+No tengo palabras suficientes, ni el universo es lo bastante grande, para agradecerte por todo lo que eres y por cada gramo de lo que me has enseñado a ser. Llegaste a mi vida como un soplo de aire fresco en medio de la asfixia, en un momento en que más te necesitaba, y con tu luz inconfundible, tu fuerza inquebrantable y tu amor incondicional, me mostraste un camino que no sabía que existía.
+
+Me enseñaste a ver la belleza en lo simple, a encontrar la fuerza en mi propia vulnerabilidad, y el inmenso valor de ser yo mismo/a, sin máscaras. Gracias por cada risa que compartimos, por cada lágrima que secaste, por cada consejo que me guio y por cada momento de silencio que lo dijo absolutamente todo, sin necesidad de palabras.
+
+Eres un regalo invaluable en mi vida, una melodía constante de inspiración. Gracias por ser mi refugio seguro, mi compañera de aventuras, mi confidente más leal y, sobre todo, mi mejor maestra. Te amo con cada fibra de mi ser, con todo mi corazón, hoy y siempre. 💖🫂✨`
+                }
+            };
+
+            // Event listener for opening the gift box
+            openGiftButton.addEventListener('click', () => {
+                initialView.classList.add('hidden'); // Hides the initial gift box view
+                optionsView.classList.add('active'); // Shows the options grid by applying 'active' class
+                // Optional: Adds a slight delay for a smoother transition effect
+                setTimeout(() => {
+                    optionsView.style.opacity = '1';
+                }, 100);
+            });
+
+            // Event listeners for each option card
+            optionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const contentId = card.dataset.contentId; // Gets the content ID from the data attribute
+                    const requiresViewedAll = card.dataset.requiresViewedAll === 'true'; // Check if this card requires all others to be viewed
+
+                    // If it's the special card and not all others have been viewed
+                    if (requiresViewedAll && viewedCategories.size < allRegularCategories.length) {
+                        customAlertModal.classList.add('active'); // Show the custom alert
+                        return; // Stop execution
+                    }
+
+                    // If it's a regular card, add its ID to the viewed set
+                    if (!requiresViewedAll) {
+                        const formattedContentId = contentId.replace(/-/g, '_');
+                        viewedCategories.add(formattedContentId);
+                        // Check if all regular categories have been viewed, and if so, unlock the special card
+                        if (viewedCategories.size === allRegularCategories.length) {
+                            agradecimientoCard.classList.remove('locked');
+                            // Optional: Change icon from lock to something else if unlocked
+                            agradecimientoCard.querySelector('i').classList.remove('fa-lock');
+                            agradecimientoCard.querySelector('i').classList.add('fa-heart-sparkles'); // New icon for unlocked
+                        }
+                    }
+
+                    // Proceed to show content if not blocked
+                    const formattedContentId = contentId.replace(/-/g, '_');
+                    const selectedContent = contents[formattedContentId]; // Retrieves the content based on the ID
+
+                    if (selectedContent) {
+                        contentTitle.textContent = selectedContent.title; // Sets the title of the content display
+                        contentText.textContent = selectedContent.text; // Sets the text of the content display
+
+                        optionsView.classList.remove('active'); // Hides the options grid
+                        contentView.classList.add('active'); // Shows the content display
+                        // Optional: Adds a slight delay for a smoother transition effect
+                        setTimeout(() => {
+                            contentView.style.opacity = '1';
+                        }, 100);
+                    }
+                });
+            });
+
+            // Event listener for closing the content view
+            closeContentButton.addEventListener('click', () => {
+                contentView.classList.remove('active'); // Hides the content display
+                optionsView.classList.add('active'); // Shows the options grid again
+                // Optional: Adds a slight delay for a smoother transition effect
+                setTimeout(() => {
+                    optionsView.style.opacity = '1';
+                }, 100);
+            });
+
+            // Event listener for closing the custom alert modal
+            closeAlertButton.addEventListener('click', () => {
+                customAlertModal.classList.remove('active'); // Hides the custom alert
+            });
+        });
+    </script>
 </body>
 </html>
+
+</html>, en la cosa esta que me hiciste, este el 2:
